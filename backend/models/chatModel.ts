@@ -9,7 +9,12 @@ const chatModel = new Schema<IChat>({
   letestMessage: { type: Schema.Types.ObjectId, ref: "Message" },
   admin: [{ type: Schema.Types.ObjectId, ref: "User" }],
   mutedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  unreadCount: { type: Number, default: 0 },
+  unreadCount: [
+    {
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      count: { type: Number, default: false },
+    },
+  ],
   isblocked: { type: Boolean, default: false },
   wallpaper: { type: String, default: "#777777" },
   archivedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],

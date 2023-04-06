@@ -8,11 +8,11 @@ import editUserProfile from "../controllers/userControllers/editUserProfile";
 
 const userRouts = express.Router();
 
+userRouts.post("/login", loginUser);
+
 userRouts.get("/", authMiddleware, getAllUsers);
 
 userRouts.post("/register", registerUser);
-
-userRouts.post("/login", loginUser);
 
 userRouts.post("/edit", authMiddleware, editUserProfile);
 

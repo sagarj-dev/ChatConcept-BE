@@ -3,6 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import { defaultWallpaper } from "../../constant/constant";
 import Chat from "../../models/chatModel";
 import { IChat } from "../../type/types";
+import { Types } from "mongoose";
 
 const createGroupChat = expressAsyncHandler(
   async (req: Request, res: Response) => {
@@ -20,7 +21,10 @@ const createGroupChat = expressAsyncHandler(
           users: users,
           admin: [req.user._id],
           mutedBy: [],
-          unreadCount: 0,
+          unreadCount: users.map((user: Types.ObjectId) => ({
+            user,
+            count: 0,
+          })),
           archivedBy: [],
           pinnedBy: [],
           isblocked: false,

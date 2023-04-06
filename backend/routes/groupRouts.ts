@@ -1,5 +1,4 @@
 import express from "express";
-import { getAllChats } from "../controllers/chatControllers";
 import addGroupMember from "../controllers/groupControllers/addGroupMember";
 import changeGroupImage from "../controllers/groupControllers/changeGroupImage";
 import changeGroupName from "../controllers/groupControllers/changeGroupName";

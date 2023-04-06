@@ -17,6 +17,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     onlineStatus: { type: String, default: new Date().toISOString() },
     statusMessage: { type: String, default: "" },
+    currentChat: { type: Schema.Types.ObjectId, default: null },
   },
   {
     timestamps: true,
@@ -39,7 +40,16 @@ userSchema.post("save", async function (addedUser) {
         isGroupChat: false,
         mutedBy: [],
         pinnedBy: [],
-        unreadCount: 0,
+        unreadCount: [
+          {
+            user: dbUser._id,
+            count: 0,
+          },
+          {
+            user: addedUser._id,
+            count: 0,
+          },
+        ],
         users: [dbUser._id, addedUser._id],
         wallpaper: "#77777",
       };

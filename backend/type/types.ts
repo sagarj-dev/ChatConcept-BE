@@ -6,12 +6,13 @@ export interface IUser {
   avatar: string;
   onlineStatus: string;
   statusMessage: string;
+  currentChat: Types.ObjectId | null;
 }
 
 export interface IMessage {
   readBy: Types.ObjectId[];
   sender: Types.ObjectId;
-  content: { type: String; trim: true };
+  content: string;
   chat: Types.ObjectId;
   starredBy: Types.ObjectId[];
   messageType: "text" | "pdf" | "image" | "video" | "Doc" | "Audio";
@@ -23,7 +24,7 @@ export interface IChat {
   users: Types.ObjectId[];
   admin: Types.ObjectId[];
   mutedBy: Types.ObjectId[];
-  unreadCount: number;
+  unreadCount: { user: Types.ObjectId; count: number }[];
   isblocked: boolean;
   wallpaper: string;
   archivedBy: Types.ObjectId[];

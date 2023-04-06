@@ -4,8 +4,8 @@ import { authMiddleware } from "../middleware/authMiddleware";
 import deleteChat from "../controllers/chatControllers/deleteChat";
 
 import getAllChats from "../controllers/chatControllers/getAllChats";
-import pinChat from "../controllers/chatControllers/PinChat";
-import getAllPinnedChat from "../controllers/chatControllers/getAllpinnedChat";
+import pinChat from "../controllers/chatControllers/pinChat";
+import getAllPinnedChat from "../controllers/chatControllers/getAllPinnedChat";
 import getAllArchivedChat from "../controllers/chatControllers/getAllArchivedChat";
 import archiveChat from "../controllers/chatControllers/archiveChat";
 
