@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { defaultWallpaper } from "../../constant/constant";
+import { defaultAvatar, defaultWallpaper } from "../../constant/constant";
 import Chat from "../../models/chatModel";
 import { IChat } from "../../type/types";
 import { Types } from "mongoose";
@@ -29,6 +29,7 @@ const createGroupChat = expressAsyncHandler(
           pinnedBy: [],
           isblocked: false,
           wallpaper: defaultWallpaper,
+          avatar: defaultAvatar,
         };
 
         if (avatar) groupChatData.avatar = avatar;
