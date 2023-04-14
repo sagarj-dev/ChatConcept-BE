@@ -5,10 +5,11 @@ import User from "../../models/userModel";
 
 const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-
+  let errors = { email: "", password: "" };
   const user = await User.findOne({ email: email });
   if (!user) {
-    res.status(401).json({ error: "Invalid Email" });
+    errors.email = "Invalid Email";
+    res.status(401).json({ error: errors });
   } else if (user && (await user.checkPassword(password))) {
     res.status(200).json({
       _id: user._id,
@@ -18,7 +19,8 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
       token: generateToken(user._id.toString()),
     });
   } else {
-    res.status(401).json({ error: "Invalid Password" });
+    errors.password = "Invalid Password";
+    res.status(401).json({ error: errors });
   }
 });
 
