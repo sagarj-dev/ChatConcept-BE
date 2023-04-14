@@ -26,7 +26,7 @@ const sendMessage = expressAsyncHandler(async (req: Request, res: Response) => {
     // let currentChat = await Chat.findById(chatId);
     let chat = await Chat.findById(chatId);
     if (chat) {
-      chat.letestMessage = createdMsg._id;
+      chat.latestMessage = createdMsg._id;
       chat.unreadCount = chat.unreadCount.map((countObj) => {
         if (countObj.user.toString() === sender.toString()) {
           return { user: countObj.user, count: 0 };

@@ -29,7 +29,7 @@ export interface IChat {
   wallpaper: string;
   archivedBy: Types.ObjectId[];
   pinnedBy: Types.ObjectId[];
-  letestMessage?: Types.ObjectId;
+  latestMessage?: Types.ObjectId;
   avatar?: string;
 }
 

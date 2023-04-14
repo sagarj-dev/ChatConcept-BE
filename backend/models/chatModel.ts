@@ -6,7 +6,7 @@ const chatModel = new Schema<IChat>({
   chatName: { type: String, trim: true },
   isGroupChat: { type: Boolean, default: false },
   users: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  letestMessage: { type: Schema.Types.ObjectId, ref: "Message" },
+  latestMessage: { type: Schema.Types.ObjectId, ref: "Message" },
   admin: [{ type: Schema.Types.ObjectId, ref: "User" }],
   mutedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   unreadCount: [

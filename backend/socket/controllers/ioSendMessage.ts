@@ -33,7 +33,7 @@ const ioSendMessage = async ({
       await User.find({ currentChat: chatId }).select("id")
     ).map((a) => a._id.toString());
 
-    chat.letestMessage = createdMsg._id;
+    chat.latestMessage = createdMsg._id;
     chat.unreadCount = chat.unreadCount.map((countObj) => {
       if (activeChats.includes(countObj.user.toString())) {
         return { user: countObj.user, count: 0 };

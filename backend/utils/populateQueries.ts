@@ -20,7 +20,7 @@ const chatPopulateQuery = [
     select: "-password",
   },
   {
-    path: "letestMessage",
+    path: "latestMessage",
   },
 ];
 
