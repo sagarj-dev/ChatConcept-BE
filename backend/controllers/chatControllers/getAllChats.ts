@@ -11,6 +11,7 @@ const getAllChats = expressAsyncHandler(async (req: Request, res: Response) => {
       },
     })
       .populate(chatPopulateQuery)
+      .sort({ updatedAt: 1 })
       .then((results) => {
         res.status(200).json(results);
       });
