@@ -21,7 +21,6 @@ const chatModel = new Schema<IChat>({
   pinnedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   avatar: {
     type: String,
-    default: defaultAvatar,
   },
 });
 
