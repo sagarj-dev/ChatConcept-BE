@@ -6,19 +6,20 @@ import { IChat } from "../../type/types";
 import { Types } from "mongoose";
 
 const createGroupChat = expressAsyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
       if (req.user) {
         const { name, users, avatar } = req.body;
         if (!name || users.length === 0) {
-          res.status(400).json({ data: { error: "invalid request payload" } });
-          return;
+          return res
+            .status(400)
+            .json({ data: { error: "invalid request payload" } });
         }
 
         const groupChatData: IChat = {
           chatName: name,
           isGroupChat: true,
-          users: users,
+          users: [...users, req.user._id],
           admin: [req.user._id],
           mutedBy: [],
           unreadCount: users.map((user: Types.ObjectId) => ({

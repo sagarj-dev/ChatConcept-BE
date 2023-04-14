@@ -15,13 +15,11 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ data: { error: "please enter all required fields" } });
-    throw new Error("please enter all required fields");
   }
 
   email = email.toLowerCase();
   if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
     res.status(400).json({ data: { error: "invalid Email" } });
-    throw new Error("Invalid email");
   }
 
   // (?=(.*[a-z]){3,})               lowercase letters. {3,} indicates that you want 3 of this group
@@ -36,13 +34,11 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     )
   ) {
     res.status(400).json({ data: { error: "Please Use a strong password" } });
-    throw new Error("invalid password");
   }
 
   const isUserExist = await User.findOne({ email });
   if (isUserExist) {
     res.status(400).json({ data: { error: "User already exist" } });
-    throw new Error("User already Exists");
   }
 
   const user = await User.create({ name, email, password, avatar });
@@ -57,7 +53,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     });
   } else {
     res.status(400);
-    throw new Error("Flied to create a new user");
   }
 });
 

@@ -3,12 +3,13 @@ import expressAsyncHandler from "express-async-handler";
 import Chat from "../../models/chatModel";
 
 const changeGroupName = expressAsyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
       const { chatId, name } = req.body;
       if (!chatId || !name) {
-        res.status(400).json({ data: { error: "invalid request payload" } });
-        return;
+        return res
+          .status(400)
+          .json({ data: { error: "invalid request payload" } });
       }
 
       const chat = await Chat.findById(chatId);
@@ -22,7 +23,7 @@ const changeGroupName = expressAsyncHandler(
 
         res.status(200).json(updatedChat);
       } else {
-        res.status(400).json({ data: { error: "Invalid ChatId" } });
+        return res.status(400).json({ data: { error: "Invalid ChatId" } });
       }
     } catch (error) {
       res.status(400).json({ data: { error: "Server Error" } });

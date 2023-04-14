@@ -9,18 +9,18 @@ interface IRequestBody {
 }
 
 const addGroupMember = expressAsyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
       const { chatId, members }: IRequestBody = req.body;
 
       if (!chatId || members.length === 0) {
-        res.status(400).json({ data: { error: "invalid request payload" } });
-        return;
+        return res
+          .status(400)
+          .json({ data: { error: "invalid request payload" } });
       }
 
       if (!checkArrayIdIsValid(members)) {
-        res.status(400).json({ data: { error: "invalid Users" } });
-        return;
+        return res.status(400).json({ data: { error: "invalid Users" } });
       }
 
       const group = await Chat.findById(chatId);
@@ -31,8 +31,9 @@ const addGroupMember = expressAsyncHandler(
             (user) => user.toString() === req.user?._id.toString()
           ).length === 0
         ) {
-          res.status(403).json({ data: { error: "User is not group Admin" } });
-          return;
+          return res
+            .status(403)
+            .json({ data: { error: "User is not group Admin" } });
         }
 
         let newUsers = [
@@ -49,7 +50,7 @@ const addGroupMember = expressAsyncHandler(
         );
         res.status(200).json(updatedGroup);
       } else {
-        res.status(400).json({ data: { error: "invalid chatId" } });
+        return res.status(400).json({ data: { error: "invalid chatId" } });
       }
     } catch (error) {
       res.status(500);
