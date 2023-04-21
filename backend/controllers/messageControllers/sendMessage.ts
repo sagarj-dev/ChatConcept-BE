@@ -12,7 +12,7 @@ const sendMessage = expressAsyncHandler(async (req: Request, res: Response) => {
       return;
     }
 
-    let newMessage: IMessage = {
+    let newMessage = {
       chat: chatId,
       sender,
       content,

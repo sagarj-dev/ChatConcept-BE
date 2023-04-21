@@ -18,7 +18,7 @@ const ioSendMessage = async ({
   messageType,
 }: IChatMsg) => {
   try {
-    let newMessage: IMessage = {
+    let newMessage = {
       chat: chatId,
       sender,
       content,
