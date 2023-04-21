@@ -13,7 +13,7 @@ const messageModel = new Schema<IMessage, UserModel, {}>(
     messageType: {
       type: String,
       trim: true,
-      enum: ["text", "pdf", "image", "video", "Doc", "Audio"],
+      enum: ["text", "pdf", "image", "gif", "video", "doc", "audio"],
     },
   },
   {
