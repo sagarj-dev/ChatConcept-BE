@@ -58,6 +58,7 @@ io.sockets.on("connection", async (socket: Socket) => {
     ioClearChatCount(chatId, socket.handshake.query._id as string);
   });
   socket.on("disconnect", async function () {
-    await makeUserOffline(user._id as string);
+    if (mongoose.connection.readyState === 1)
+      await makeUserOffline(user._id as string);
   });
 });

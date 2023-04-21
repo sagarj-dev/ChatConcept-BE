@@ -19,8 +19,8 @@ const chatPopulateQuery = [
     path: "pinnedBy",
     select: "-password",
   },
-  // { path: "latestMessage" },
-  { path: "latestMessage", options: { sort: [{ updatedAt: "desc" }] } },
+  { path: "latestMessage" },
+  // { path: "latestMessage", options: { sort: [{ createdAt: 1 }] } },
 ];
 
 const messagePopulateQuery = [
