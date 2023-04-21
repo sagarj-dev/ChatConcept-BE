@@ -16,6 +16,7 @@ import makeUserOffline from "./socket/controllers/makeUserOffline";
 import ioSendMessage from "./socket/controllers/ioSendMessage";
 import ioClearChatCount from "./socket/controllers/ioClearChatCount";
 import ioSetCurrentChat from "./socket/controllers/ioSetCurrentChat";
+import mongoose from "mongoose";
 const app: Express = express();
 dotenv.config();
 connectDB();
@@ -41,8 +42,8 @@ const io = createSocketServer(server);
 io.sockets.on("connection", async (socket: Socket) => {
   const user = socket.handshake.query;
 
-  //// setUser online
-  await makeUserOnline(user._id as string);
+  if (mongoose.connection.readyState === 1)
+    await makeUserOnline(user._id as string);
   if (user._id) {
     socket.join(user._id);
   }

@@ -16,6 +16,8 @@ export interface IMessage {
   chat: Types.ObjectId;
   starredBy: Types.ObjectId[];
   messageType: "text" | "pdf" | "image" | "video" | "Doc" | "Audio";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IChat {
