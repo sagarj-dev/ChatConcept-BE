@@ -14,10 +14,6 @@ const getAllChats = expressAsyncHandler(async (req: Request, res: Response) => {
       .populate(chatPopulateQuery)
       .sort([["latestMessage", -1]])
       .then((results) => {
-        results.forEach((r) => {
-          const latestMessage = r.latestMessage as unknown as IMessage;
-          console.log(latestMessage.createdAt);
-        });
         res.status(200).json(results);
       });
   } catch (error) {
