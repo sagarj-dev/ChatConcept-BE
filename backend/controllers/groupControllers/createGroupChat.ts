@@ -22,10 +22,16 @@ const createGroupChat = expressAsyncHandler(
           users: [...users, req.user._id],
           admin: [req.user._id],
           mutedBy: [],
-          unreadCount: users.map((user: Types.ObjectId) => ({
-            user,
-            count: 0,
-          })),
+          unreadCount: [
+            ...users.map((user: Types.ObjectId) => ({
+              user,
+              count: 0,
+            })),
+            {
+              user: req.user._id,
+              count: 0,
+            },
+          ],
           archivedBy: [],
           pinnedBy: [],
           isblocked: false,
