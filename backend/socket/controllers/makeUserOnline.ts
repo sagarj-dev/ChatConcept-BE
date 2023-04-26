@@ -1,7 +1,17 @@
+import Chat from "../../models/chatModel";
+import Message from "../../models/messageModel";
 import User from "../../models/userModel";
 import { io } from "../io";
 const makeUserOnline = async (id: string) => {
   try {
+    const userChats = await Chat.find({ users: id }, "_id");
+    const chatIDs = userChats.map((c) => c._id.toString());
+    await Message.updateMany(
+      { chat: { $in: chatIDs } },
+      { messageStatus: "delivered" },
+      { multi: true, new: true }
+    );
+
     const user = await User.findByIdAndUpdate(
       id,
       { onlineStatus: "Online" },

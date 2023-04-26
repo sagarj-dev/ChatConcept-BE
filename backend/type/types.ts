@@ -13,6 +13,7 @@ export interface IMessage {
   readBy: Types.ObjectId[];
   sender: Types.ObjectId;
   content: string;
+  messageStatus: "sent" | "delivered" | "read";
   chat: Types.ObjectId;
   starredBy: Types.ObjectId[];
   messageType: "text" | "pdf" | "image" | "video" | "Doc" | "Audio";

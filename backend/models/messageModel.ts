@@ -8,6 +8,7 @@ const messageModel = new Schema<IMessage, UserModel, {}>(
     readBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
     sender: { type: Schema.Types.ObjectId, ref: "User" },
     content: { type: String, trim: true },
+    messageStatus: { type: String, default: "sent" },
     chat: { type: Schema.Types.ObjectId, ref: "Chat" },
     starredBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
     messageType: {
