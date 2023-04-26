@@ -19,8 +19,14 @@ const getAllMessage = expressAsyncHandler(
         { chat: chatId },
         {
           $addToSet: { readBy: req.user?._id },
+          messageStatus: "delivered",
         }
       );
+      // await Message.find(
+      //   { chat: chatId },
+      //   { messageStatus: "delivered" },
+      //   { multi: true, new: true }
+      // );
 
       let msgs = await Message.find({ chat: chatId });
       if (req.user) {
