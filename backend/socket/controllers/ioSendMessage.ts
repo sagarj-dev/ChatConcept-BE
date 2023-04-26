@@ -35,6 +35,7 @@ const ioSendMessage = async ({
           (u) => u._id.toString() !== sender.toString()
         )[0];
         let receiver = await User.findById(receiverID);
+
         if (receiver?.onlineStatus === "Online") {
           newMessage.messageStatus = "delivered";
         } else if (receiver?.currentChat?.toString() === chatId.toString()) {

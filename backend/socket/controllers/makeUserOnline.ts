@@ -7,7 +7,7 @@ const makeUserOnline = async (id: string) => {
     const userChats = await Chat.find({ users: id }, "_id");
     const chatIDs = userChats.map((c) => c._id.toString());
     await Message.updateMany(
-      { chat: { $in: chatIDs } },
+      { chat: { $in: chatIDs }, sender: { $ne: id } },
       { messageStatus: "delivered" },
       { multi: true, new: true }
     );

@@ -19,6 +19,11 @@ const getAllMessage = expressAsyncHandler(
         { chat: chatId },
         {
           $addToSet: { readBy: req.user?._id },
+        }
+      );
+      await Message.updateMany(
+        { chat: chatId, sender: { $ne: req.user?._id } },
+        {
           messageStatus: "read",
         }
       );
