@@ -10,6 +10,7 @@ import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import isBetween from "dayjs/plugin/isBetween";
 import localeData from "dayjs/plugin/localeData";
+import User from "../../models/userModel";
 dayjs.extend(localeData);
 dayjs.extend(isBetween);
 dayjs.extend(isToday);
@@ -89,7 +90,7 @@ const getAllMessage = expressAsyncHandler(
           return { ...m.toJSON(), dateTag: dayjs().format("DD/MM/YYYY") };
         }
       });
-
+      await User.findByIdAndUpdate(req.user?._id, { currentChat: chatId });
       res.status(200).json(pilledMsg);
     } catch (error) {
       res.status(500);

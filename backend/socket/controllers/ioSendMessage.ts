@@ -17,6 +17,8 @@ const ioSendMessage = async ({
   content,
   messageType,
 }: IChatMsg) => {
+  console.log("got message");
+
   try {
     let newMessage = {
       chat: chatId,
@@ -34,6 +36,7 @@ const ioSendMessage = async ({
         const receiverID = chat?.users.filter(
           (u) => u._id.toString() !== sender.toString()
         )[0];
+
         let receiver = await User.findById(receiverID);
 
         if (receiver?.onlineStatus === "Online") {
@@ -47,7 +50,9 @@ const ioSendMessage = async ({
       ).map((a) => a._id.toString());
 
       let createdMsg = await Message.create(newMessage);
+
       chat.latestMessage = createdMsg._id;
+
       chat.unreadCount = chat.unreadCount.map((countObj) => {
         if (activeChats.includes(countObj.user.toString())) {
           return { user: countObj.user, count: 0 };
@@ -55,16 +60,20 @@ const ioSendMessage = async ({
           return { user: countObj.user, count: countObj.count + 1 };
         }
       });
+
       chat = await Chat.findByIdAndUpdate(chatId, chat, { new: true }).populate(
         chatPopulateQuery
       );
     }
+
     if (chat) {
       chat.users.forEach((user) => {
         io?.sockets.in(user._id.toString()).emit("newMessage", chat);
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("ioSendMessage eroor", error);
+  }
 };
 
 export default ioSendMessage;
