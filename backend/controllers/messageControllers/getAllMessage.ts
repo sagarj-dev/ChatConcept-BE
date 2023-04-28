@@ -72,9 +72,9 @@ const getAllMessage = expressAsyncHandler(
 
       let pilledMsg = msgs.map((m) => {
         if (dayjs(m.createdAt).isToday()) {
-          return { ...m.toJSON(), tag: "Today" };
+          return { ...m.toJSON(), dateTag: "Today" };
         } else if (dayjs(m.createdAt).isYesterday()) {
-          return { ...m.toJSON(), tag: "Yesterday" };
+          return { ...m.toJSON(), dateTag: "Yesterday" };
         } else if (
           dayjs(m.createdAt).isBetween(
             dayjs().subtract(2, "D"),
@@ -83,10 +83,10 @@ const getAllMessage = expressAsyncHandler(
         ) {
           return {
             ...m.toJSON(),
-            tag: dayjs().localeData().weekdays()[dayjs().day()],
+            dateTag: dayjs().localeData().weekdays()[dayjs().day()],
           };
         } else {
-          return { ...m.toJSON(), tag: dayjs().format("DD.MM.YYYY") };
+          return { ...m.toJSON(), dateTag: dayjs().format("DD/MM/YYYY") };
         }
       });
 
