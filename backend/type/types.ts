@@ -19,6 +19,7 @@ export interface IMessage {
   messageType: "text" | "pdf" | "image" | "video" | "Doc" | "Audio";
   createdAt: string;
   updatedAt: string;
+  dateTage?: string;
 }
 
 export interface IChat {

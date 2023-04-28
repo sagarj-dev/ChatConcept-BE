@@ -4,16 +4,37 @@ import Message from "../../models/messageModel";
 import { io } from "../../socket/io";
 import Chat from "../../models/chatModel";
 import { chatPopulateQuery } from "../../utils/populateQueries";
-
+import { IMessage } from "../../type/types";
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import isYesterday from "dayjs/plugin/isYesterday";
+import isBetween from "dayjs/plugin/isBetween";
+import localeData from "dayjs/plugin/localeData";
+dayjs.extend(localeData);
+dayjs.extend(isBetween);
+dayjs.extend(isToday);
+dayjs.extend(isYesterday);
+interface Iparams {
+  chatId: string;
+  page: number;
+}
 const getAllMessage = expressAsyncHandler(
   async (req: Request, res: Response) => {
     try {
-      const { chatId } = req.params;
+      let { chatId, page } = req.params;
+      let perPage = 1;
 
       if (!chatId) {
-        res.status(400).json({ data: { error: "chatId is not Provided" } });
+        res.status(400).json({ data: { error: "Invalid Query" } });
         return;
       }
+
+      // let temp = +page;
+
+      // if (Number.isNaN(temp) || temp < 1) {
+      //   res.status(400).json({ data: { error: "Invalid Query" } });
+      //   return;
+      // }
 
       await Message.updateMany(
         { chat: chatId },
@@ -27,13 +48,11 @@ const getAllMessage = expressAsyncHandler(
           messageStatus: "read",
         }
       );
-      // await Message.find(
-      //   { chat: chatId },
-      //   { messageStatus: "delivered" },
-      //   { multi: true, new: true }
-      // );
 
       let msgs = await Message.find({ chat: chatId });
+      // .limit(perPage)
+      // .skip(parseInt(page) - 1 * perPage);
+
       if (req.user) {
         let chat = await Chat.findById(chatId);
         if (chat) {
@@ -50,7 +69,28 @@ const getAllMessage = expressAsyncHandler(
         }
         io?.sockets.in(req.user._id.toString()).emit("updateChat", chat);
       }
-      res.status(200).json(msgs);
+
+      let pilledMsg = msgs.map((m) => {
+        if (dayjs(m.createdAt).isToday()) {
+          return { ...m.toJSON(), tag: "Today" };
+        } else if (dayjs(m.createdAt).isYesterday()) {
+          return { ...m.toJSON(), tag: "Yesterday" };
+        } else if (
+          dayjs(m.createdAt).isBetween(
+            dayjs().subtract(2, "D"),
+            dayjs().subtract(6, "D")
+          )
+        ) {
+          return {
+            ...m.toJSON(),
+            tag: dayjs().localeData().weekdays()[dayjs().day()],
+          };
+        } else {
+          return { ...m.toJSON(), tag: dayjs().format("DD.MM.YYYY") };
+        }
+      });
+
+      res.status(200).json(pilledMsg);
     } catch (error) {
       res.status(500);
     }

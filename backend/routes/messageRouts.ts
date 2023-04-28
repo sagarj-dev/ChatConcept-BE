@@ -10,7 +10,7 @@ const messageRouts = express.Router();
 
 messageRouts.use(authMiddleware);
 
-messageRouts.get("/:chatId", getAllMessage); // get all the messages
+messageRouts.get("/:chatId/:page", getAllMessage); // get all the messages
 
 messageRouts.post("/", sendMessage); // get all the messages
 
