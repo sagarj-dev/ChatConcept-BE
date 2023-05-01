@@ -84,10 +84,13 @@ const getAllMessage = expressAsyncHandler(
         ) {
           return {
             ...m.toJSON(),
-            dateTag: dayjs().localeData().weekdays()[dayjs().day()],
+            dateTag: dayjs(m.createdAt).localeData().weekdays()[dayjs().day()],
           };
         } else {
-          return { ...m.toJSON(), dateTag: dayjs().format("DD/MM/YYYY") };
+          return {
+            ...m.toJSON(),
+            dateTag: dayjs(m.createdAt).format("DD/MM/YYYY"),
+          };
         }
       });
       await User.findByIdAndUpdate(req.user?._id, { currentChat: chatId });
