@@ -41,7 +41,8 @@ const ioSendMessage = async ({
 
         if (receiver?.onlineStatus === "Online") {
           newMessage.messageStatus = "delivered";
-        } else if (receiver?.currentChat?.toString() === chatId.toString()) {
+        }
+        if (receiver?.currentChat?.toString() === chatId.toString()) {
           newMessage.messageStatus = "read";
         }
       }
