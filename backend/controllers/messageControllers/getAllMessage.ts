@@ -84,7 +84,9 @@ const getAllMessage = expressAsyncHandler(
         ) {
           return {
             ...m.toJSON(),
-            dateTag: dayjs(m.createdAt).localeData().weekdays()[dayjs().day()],
+            dateTag: dayjs(m.createdAt).localeData().weekdays()[
+              dayjs(m.createdAt).day()
+            ],
           };
         } else {
           return {
