@@ -17,7 +17,7 @@ const makeUserOnline = async (id: string) => {
       { onlineStatus: "Online" },
       { new: true }
     );
-    io?.sockets.emit("UserStatusChanged", user);
+    io?.sockets.emit("userStatusChanged", user);
   } catch (error) {
     console.log("MakeUserOnline", error);
   }

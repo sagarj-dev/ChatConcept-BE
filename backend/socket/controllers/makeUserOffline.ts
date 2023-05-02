@@ -12,7 +12,7 @@ const makeUserOffline = async (id: string) => {
       { new: true }
     );
 
-    io?.sockets.emit("UserStatusChanged", user);
+    io?.sockets.emit("userStatusChanged", user);
   } catch (error) {
     console.log("makeUserOffline error", error);
   }

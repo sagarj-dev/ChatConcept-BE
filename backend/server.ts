@@ -47,8 +47,6 @@ io.sockets.on("connection", async (socket: Socket) => {
   if (user._id) {
     socket.join(user._id);
   }
-  console.log("xx");
-
   socket.on("newMessage", ioSendMessage);
 
   socket.on("setCurrentChat", (chatId: string) => {
