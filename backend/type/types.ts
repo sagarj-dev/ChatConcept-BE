@@ -16,7 +16,7 @@ export interface IMessage {
   messageStatus: "sent" | "delivered" | "read";
   chat: Types.ObjectId;
   starredBy: Types.ObjectId[];
-  messageType: "text" | "pdf" | "image" | "video" | "Doc" | "Audio";
+  messageType: "text" | "pdf" | "image" | "video" | "doc" | "audio" | "link";
   createdAt: string;
   updatedAt: string;
   dateTage?: string;
