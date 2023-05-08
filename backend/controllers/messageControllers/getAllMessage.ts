@@ -36,7 +36,6 @@ const getAllMessage = expressAsyncHandler(
       //   res.status(400).json({ data: { error: "Invalid Query" } });
       //   return;
       // }
-
       await Message.updateMany(
         { chat: chatId },
         {
@@ -64,9 +63,33 @@ const getAllMessage = expressAsyncHandler(
               return countObj;
             }
           });
+
           chat = await Chat.findByIdAndUpdate(chatId, chat, {
             new: true,
           }).populate(chatPopulateQuery);
+
+          // if its a single chat then send other user an event that all messages has been read
+          if (chat && chat.isGroupChat === false) {
+            const currentUsers = await User.find(
+              { currentChat: chatId },
+              "_id"
+            );
+
+            const usersToSendEvent = currentUsers.filter(
+              (u) => u._id.toString() !== req.user?._id.toString()
+            );
+
+            if (usersToSendEvent.length > 0) {
+              usersToSendEvent.forEach((user) => {
+                console.log("emiting event");
+
+                io?.in(user._id.toString()).emit("allMessagesRead", {
+                  readBy: req.user?._id.toString(),
+                  chatId,
+                });
+              });
+            }
+          }
         }
         io?.sockets.in(req.user._id.toString()).emit("updateChat", chat);
       }

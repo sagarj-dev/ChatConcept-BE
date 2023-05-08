@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 
 import Chat from "../../models/chatModel";
+import { io } from "../../socket/io";
+import { chatPopulateQuery } from "../../utils/populateQueries";
 
 const muteChat = expressAsyncHandler(
   async (req: Request, res: Response): Promise<any> => {
@@ -19,7 +21,6 @@ const muteChat = expressAsyncHandler(
     }
     if (chat && req.user) {
       const userId = req.user?._id;
-
       if (chat.mutedBy.includes(userId)) {
         chat.mutedBy = chat.mutedBy.filter(
           (id) => id.toString() !== userId.toString()
@@ -27,7 +28,10 @@ const muteChat = expressAsyncHandler(
       } else {
         chat.mutedBy.push(userId);
       }
-      chat = await Chat.findByIdAndUpdate(chatId, chat, { new: true });
+      chat = await Chat.findByIdAndUpdate(chatId, chat, { new: true }).populate(
+        chatPopulateQuery
+      );
+      // io?.sockets.in(req.user._id.toString()).emit("updateChat", chat);
       res.status(200).json(chat);
     }
   }
