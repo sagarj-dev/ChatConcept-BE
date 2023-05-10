@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 
 import Chat from "../../models/chatModel";
-import { io } from "../../socket/io";
 import { chatPopulateQuery } from "../../utils/populateQueries";
 
 const muteChat = expressAsyncHandler(

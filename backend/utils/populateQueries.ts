@@ -4,10 +4,6 @@ const chatPopulateQuery = [
     select: "-password",
   },
   {
-    path: "admin",
-    select: "-password",
-  },
-  {
     path: "mutedBy",
     select: "-password",
   },

@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import Message from "../../models/messageModel";
-import { IMessage } from "../../type/types";
+
 import { io } from "../io";
 import Chat from "../../models/chatModel";
 import { chatPopulateQuery } from "../../utils/populateQueries";
