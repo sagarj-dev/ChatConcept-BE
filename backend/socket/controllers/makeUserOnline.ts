@@ -43,9 +43,10 @@ const makeUserOnline = async (id: string) => {
         chat.users.forEach((userId) => {
           if (userId.toString() !== id) {
             io?.sockets.in(userId.toString()).emit("updateChat", chat);
-            io?.sockets
-              .in(userId.toString())
-              .emit("allMessageDelivered", { chatId: chat._id.toString() });
+            io?.sockets.in(userId.toString()).emit("messageStatusChanged", {
+              chatId: chat._id.toString(),
+              status: "delivered",
+            });
           }
         });
       }

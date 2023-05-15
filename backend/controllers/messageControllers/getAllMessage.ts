@@ -83,9 +83,9 @@ const getAllMessage = expressAsyncHandler(
               usersToSendEvent.forEach((user) => {
                 console.log("emiting event");
 
-                io?.in(user._id.toString()).emit("allMessagesRead", {
-                  readBy: req.user?._id.toString(),
+                io?.in(user._id.toString()).emit("messageStatusChanged", {
                   chatId,
+                  status: "read",
                 });
               });
             }
