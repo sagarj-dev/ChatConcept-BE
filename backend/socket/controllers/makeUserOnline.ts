@@ -6,6 +6,23 @@ const makeUserOnline = async (id: string) => {
   try {
     const userChats = await Chat.find({ users: id }, "_id");
     const chatIDs = userChats.map((c) => c._id.toString());
+    const unreadChat = await Message.find(
+      {
+        chat: { $in: chatIDs },
+        sender: { $ne: id },
+        messageStatus: { $eq: "sent" },
+      },
+      "chat -_id",
+      { lean: true }
+    );
+    // console.log(unreadChat);
+    let unreadChatUnique: string[] = [];
+    unreadChat.forEach((unreadChatId) => {
+      if (!unreadChatUnique.includes(unreadChatId.chat.toString())) {
+        return unreadChatUnique.push(unreadChatId.chat.toString());
+      }
+    });
+
     await Message.updateMany(
       { chat: { $in: chatIDs }, sender: { $ne: id } },
       { messageStatus: "delivered" },
@@ -17,7 +34,22 @@ const makeUserOnline = async (id: string) => {
       { onlineStatus: "Online" },
       { new: true }
     );
+
     io?.sockets.emit("userStatusChanged", user);
+
+    unreadChatUnique.forEach(async (unreadChatId) => {
+      const chat = await Chat.findOne({ id: unreadChatId });
+      if (chat && !chat.isGroupChat) {
+        chat.users.forEach((userId) => {
+          if (userId.toString() !== id) {
+            io?.sockets.in(userId.toString()).emit("updateChat", chat);
+            io?.sockets
+              .in(userId.toString())
+              .emit("allMessageDelivered", { chatId: chat._id.toString() });
+          }
+        });
+      }
+    });
   } catch (error) {
     console.log("MakeUserOnline", error);
   }
