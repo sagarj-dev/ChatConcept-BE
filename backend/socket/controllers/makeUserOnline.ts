@@ -38,11 +38,19 @@ const makeUserOnline = async (id: string) => {
     io?.sockets.emit("userStatusChanged", user);
 
     unreadChatUnique.forEach(async (unreadChatId) => {
-      const chat = await Chat.findOne({ id: unreadChatId });
+      console.log("getting id", unreadChatId);
+
+      const chat = await Chat.findOne({ _id: unreadChatId });
+      console.log("chat", chat);
+
       if (chat && !chat.isGroupChat) {
+        console.log("users", chat.users);
+
         chat.users.forEach((userId) => {
           if (userId.toString() !== id) {
             io?.sockets.in(userId.toString()).emit("updateChat", chat);
+            console.log("emiting to", userId);
+
             io?.sockets
               .in(userId.toString())
               .emit("allMessageDelivered", { chatId: chat._id.toString() });
