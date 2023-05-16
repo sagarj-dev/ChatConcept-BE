@@ -1,6 +1,7 @@
 import Chat from "../../models/chatModel";
 import Message from "../../models/messageModel";
 import User from "../../models/userModel";
+import { chatPopulateQuery } from "../../utils/populateQueries";
 import { io } from "../io";
 const makeUserOnline = async (id: string) => {
   try {
@@ -38,7 +39,9 @@ const makeUserOnline = async (id: string) => {
     io?.sockets.emit("userStatusChanged", user);
 
     unreadChatUnique.forEach(async (unreadChatId) => {
-      const chat = await Chat.findOne({ _id: unreadChatId });
+      const chat = await Chat.findOne({ _id: unreadChatId }).populate(
+        chatPopulateQuery
+      );
       if (chat && !chat.isGroupChat) {
         chat.users.forEach((userId) => {
           if (userId.toString() !== id) {
