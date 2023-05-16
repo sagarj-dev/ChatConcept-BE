@@ -87,11 +87,12 @@ const getAllMessage = expressAsyncHandler(
                   chatId,
                   status: "read",
                 });
+                io?.in(user._id.toString()).emit("updateChat", chat);
               });
             }
+            io?.sockets.in(req.user._id.toString()).emit("updateChat", chat);
           }
         }
-        io?.sockets.in(req.user._id.toString()).emit("updateChat", chat);
       }
 
       let pilledMsg = msgs.map((m) => {
