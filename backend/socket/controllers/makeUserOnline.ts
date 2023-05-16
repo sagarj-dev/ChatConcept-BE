@@ -43,7 +43,7 @@ const makeUserOnline = async (id: string) => {
         chatPopulateQuery
       );
       if (chat && !chat.isGroupChat) {
-        chat.users.forEach((userId) => {
+        chat.users.forEach(({ _id: userId }) => {
           if (userId.toString() !== id) {
             io?.sockets.in(userId.toString()).emit("updateChat", chat);
             io?.sockets.in(userId.toString()).emit("messageStatusChanged", {
