@@ -25,7 +25,11 @@ const makeUserOnline = async (id: string) => {
     });
 
     await Message.updateMany(
-      { chat: { $in: chatIDs }, sender: { $ne: id } },
+      {
+        chat: { $in: chatIDs },
+        sender: { $ne: id },
+        messageStatus: { $eq: "sent" },
+      },
       { messageStatus: "delivered" },
       { multi: true, new: true }
     );
